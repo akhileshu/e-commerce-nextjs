@@ -3,7 +3,7 @@
 import { addProductInDB } from "@/data-access/product";
 import { handleError } from "@/error-handling/wrap-with-try-catch";
 import { getSessionByRole } from "@/lib/getSessionSeller";
-import { userRoles } from "@/types/shared";
+import { ActionSuccessBase, userRoles } from "@/types/shared";
 import { z } from "zod";
 
 const stringToJSONSchema = z
@@ -52,12 +52,15 @@ export const listAProduct = handleError(
     };
 
     const id = await addProductInDB(updatedData);
+
+    type Success=ActionSuccessBase & {
+    }
+    const successObj: Success = {
+      message: "Product added successfully",
+      redirectPath: `/seller/products/add-variants/${id}`,
+    };
     return {
-      success: {
-        message: "Product added successfully",
-        productId: id,
-        redirectPath:`/seller/products/add-variants/${id}`,
-      },
+      success: successObj,
     };
   }
 );

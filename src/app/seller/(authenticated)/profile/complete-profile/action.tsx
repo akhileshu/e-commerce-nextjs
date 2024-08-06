@@ -7,7 +7,7 @@ import {
 } from "@/data-access/seller";
 import { handleError } from "@/error-handling/wrap-with-try-catch";
 import { getSessionByRole } from "@/lib/getSessionSeller";
-import { ActionSuccess, userRoles } from "@/types/shared";
+import { ActionSuccessBase, userRoles } from "@/types/shared";
 import { z } from "zod";
 
 const stringToJSONSchema = z
@@ -66,11 +66,14 @@ export const addSellerAddress = handleError(
       addressId,
       phoneNumber,
     });
-    return {
-      success: {
+
+    type Success = ActionSuccessBase & {};
+    const successObj: Success = {
       redirectPath: "/seller",
       message: "Updated your phone number and address",
-    },
+    };
+    return {
+      success: successObj,
     };
   }
 );

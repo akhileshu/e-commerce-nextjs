@@ -1,5 +1,4 @@
 import { FormatedError } from "@/error-handling/wrap-with-try-catch";
-import { aestheticBoxShadow } from "@/lib/css";
 import { cn } from "@/lib/utils";
 import { ServerCrash } from "lucide-react";
 
@@ -14,7 +13,7 @@ function ShowError({
     <div
       className={cn(
         className,
-        `flex gap-4 items-center ${aestheticBoxShadow} mx-auto max-w-xl my-4 p-4 gap-4 rounded-md`
+        `flex gap-4 items-center shadow-aesthetic mx-auto max-w-xl my-4 p-4 gap-4 rounded-md`
       )}
     >
       <ServerCrash size={40} color="#ff5c5c" />

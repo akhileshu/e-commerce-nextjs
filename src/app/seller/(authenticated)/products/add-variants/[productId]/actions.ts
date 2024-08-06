@@ -3,11 +3,10 @@
 import { getCategoryAttributesByProductId } from "@/data-access/categoryAttribute";
 import { getProductByIdToAddVariants } from "@/data-access/product";
 import { addProductVarientInDB } from "@/data-access/productVariant";
-import {
-  handleError
-} from "@/error-handling/wrap-with-try-catch";
+import { handleError } from "@/error-handling/wrap-with-try-catch";
 import { uploadImageAndGetUrl } from "@/lib/uploadFiles";
-import { unstable_cache } from "next/cache";
+import { ActionSuccessBase } from "@/types/shared";
+import { revalidateTag, unstable_cache } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -66,22 +65,32 @@ export const getCategoryAttributes = handleError(async (productId: string) => {
   return await getCategoryAttributesByProductId(productId);
 });
 
-export async function addProductVarient(
-  prevState: unknown,
-  formData: FormData
-) {
-  const { success, data, error } = addProductVarientSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
-  if (error) {
-    return { error: error.formErrors.fieldErrors };
-  }
+export const addProductVarient = handleError(
+  async (prevState: unknown, formData: FormData) => {
+    
+    const { success, data, error } = addProductVarientSchema.safeParse(
+      Object.fromEntries(formData.entries())
+    );
+    if (error) {
+      return { formErrors: error.formErrors.fieldErrors };
+    }
 
-  let imagePath = await uploadImageAndGetUrl(data.pics);
-  let updatedData = {
-    ...data,
-    pics: [imagePath],
-  };
-  const productVariant = await addProductVarientInDB(updatedData);
-  redirect(`/seller/products/add-variants/${data.productId}`);
-}
+    let imagePath = await uploadImageAndGetUrl(data.pics);
+    let updatedData = {
+      ...data,
+      pics: [imagePath],
+    };
+
+    const productVariant = await addProductVarientInDB(updatedData);
+    //revalidateTag("get-product-for-adding-variant"); // todo fix:reloding page
+
+    type Success = ActionSuccessBase & {};
+    const successObj: Success = {
+      message: "Product Variant added successfully",
+    };
+    return {
+      success: successObj,
+    };
+    
+  }
+);

@@ -14,12 +14,14 @@ export function BadgeComponent({
 export function BadgeComponentWithDelete({
   badgeContent,
   onDelete,
+  className,
 }: {
   badgeContent: String;
   onDelete: () => void;
+  className?: String;
 }) {
   return (
-    <Badge>
+    <Badge className={cn(className)}>
       {badgeContent}
       <CircleX onClick={onDelete} className="ml-2" size={"20px"} />
     </Badge>

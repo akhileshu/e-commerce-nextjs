@@ -1,20 +1,21 @@
 "use client";
+import { Field, FieldInput, FieldLabel } from "@/app/_components/seller-form";
 import { BadgeComponentWithDelete } from "@/components/badge";
 import { FormSubmitButton } from "@/components/submit-form-button";
+import { useImagesPreview } from "@/hooks/useImagesPreview";
+import { useTags } from "@/hooks/useTag";
 import { useSuccessErrorRedirectHandler } from "@/lib/handleSuccessErrorRedirect";
 import { CirclePlus } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { useCategoryBrand } from "../../_components/selected-category-context";
 import { listAProduct } from "../actions";
-import { Field, FieldInput, FieldLabel } from "@/app/_components/seller-form";
 
 const useProductFormHandler = () => {
   const { selectedCategoryBrand, setSelectedCategoryBrand } =
     useCategoryBrand();
-  const productTagInputRef = useRef<HTMLInputElement | null>(null);
-  const [productTags, setProductTags] = useState<string[]>([]);
+
+
 
   const [result, formAction] = useFormState(listAProduct, null);
 
@@ -23,60 +24,28 @@ const useProductFormHandler = () => {
 
   useSuccessErrorRedirectHandler({ success, error });
 
-  const handleAddProductTag = () => {
-    const newProductTag = productTagInputRef.current?.value;
-
-    if (newProductTag) {
-      setProductTags((previousProductTags) => [
-        ...previousProductTags,
-        newProductTag,
-      ]);
-      productTagInputRef.current!.value = "";
-      productTagInputRef.current!.focus();
-    }
-  };
-
-  const handleRemoveProductTag = (removeProductTagIndex: number) => {
-    setProductTags((previousProductTags) =>
-      previousProductTags.filter((tag, index) =>
-        index !== removeProductTagIndex ? tag : null
-      )
-    );
-  };
-
   return {
     selectedCategoryBrand,
     formAction,
-    productTagInputRef,
-    productTags,
     formErrors,
     success,
-    handleAddProductTag,
-    handleRemoveProductTag,
   };
 };
 
 export function AddProductForm() {
+      const {
+        addProductTag,productTagInputRef,productTags,removeProductTag
+      } = useTags("product");
+      const { selectedImages, handleImageChange } = useImagesPreview();
   const {
     selectedCategoryBrand,
     formAction,
-    productTagInputRef,
-    productTags,
     formErrors,
-    handleAddProductTag,
-    handleRemoveProductTag,
   } = useProductFormHandler();
 
   const { brandId, brandName, categoryHierarchy, categoryId, categoryName } =
     selectedCategoryBrand || {};
 
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setSelectedImages(Array.from(e.target.files));
-    }
-  };
 
   return categoryId && brandId ? (
     <>
@@ -101,7 +70,7 @@ export function AddProductForm() {
           {productTags.map((value, valueIndex) => (
             <BadgeComponentWithDelete
               key={valueIndex}
-              onDelete={() => handleRemoveProductTag(valueIndex)}
+              onDelete={() => removeProductTag(valueIndex)}
               badgeContent={value}
             />
           ))}
@@ -120,14 +89,11 @@ export function AddProductForm() {
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   event.preventDefault();
-                  handleAddProductTag();
+                  addProductTag();
                 }
               }}
             />
-            <CirclePlus
-              onClick={handleAddProductTag}
-              className="absolute right-3"
-            />
+            <CirclePlus onClick={addProductTag} className="absolute right-3" />
           </div>
         </Field>
         <Field error={formErrors?.pics}>

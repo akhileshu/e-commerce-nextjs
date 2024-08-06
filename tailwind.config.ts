@@ -18,6 +18,11 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        standard:
+          "0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)",
+        aesthetic: "0 3px 10px rgba(0,0,0,0.2)",
+      },
       colors: {
         "amazon-orange": "#FF9900", // Amazon Orange
         "amazon-blue": "#146EB4", // Amazon Blue

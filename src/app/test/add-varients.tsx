@@ -1,6 +1,6 @@
 "use client";
 
-import { AttributeCombinationsTable } from "@/app/seller/(authenticated)/products/add-variants/[productId]/_sections/table";
+import { AttributeCombinationsTable } from "@/app/seller/(authenticated)/products/add-variants/[productId]/_sections/attribute-combinations-table";
 import { BadgeComponentWithDelete } from "@/components/badge";
 import { getCategoryAttributesByProductId } from "@/data-access/categoryAttribute";
 import { cn } from "@/lib/utils";
@@ -35,7 +35,8 @@ const AddVariants: React.FC<AddVariantsProps> = ({
       {submitAttributes ? (
         <AttributeCombinationsTable productId={productId} />
       ) : (
-        <button className="myborder"
+        <button
+          className="myborder"
           onClick={() => {
             revalidateTag("number");
           }}

@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { useBrands } from "../hooks/use-brand";
 import { CollapsibleComponent } from "./collapsible";
 import { useCategoryBrand } from "./selected-category-context";
-import { aestheticBoxShadow, standardBoxShadow } from "@/lib/css";
 
 function CategoryComponent({
   category,
@@ -40,13 +39,13 @@ function CategoryComponent({
   return (
     <div className={cn(className, "text-sm")}>
       <div
-        className={`flex rounded-sm justify-between items-center mx-2 my-1 px-2 ${standardBoxShadow} hover:bg-gray-100`}
+        className={`flex rounded-sm justify-between items-center mx-2 my-1 px-2 shadow-standard hover:bg-gray-100`}
         onMouseEnter={() => handleCategoryHover(id)}
         onMouseLeave={() => setHoveredCategoryId(null)}
       >
         <span>{name}</span>
         <button
-          className={`bg-white rounded-sm m-2 p-1 ${standardBoxShadow} `}
+          className={`bg-white rounded-sm m-2 p-1 shadow-standard `}
           onClick={() => {
             categoryHierarchy.push(category.name);
             setSelectedCategoryBrand({
@@ -129,9 +128,7 @@ function SelectBrand() {
   const brands = useBrands(categoryId);
 
   return (
-    <div
-      className={`${standardBoxShadow} flex rounded-sm justify-between m-2 p-2`}
-    >
+    <div className={`shadow-standard flex rounded-sm justify-between m-2 p-2`}>
       {!categoryId ? (
         <p className="text-gray-400 text-sm m-2 p-2">
           Associated Brands will appear here!
@@ -142,13 +139,13 @@ function SelectBrand() {
             <p className="text-gray-400 text-sm m-4">
               Select from below brands
             </p>
-           
+
             <div className="flex flex-wrap gap-2">
-              {brands.map(({brand}, index) => {
+              {brands.map(({ brand }, index) => {
                 const { id, name } = brand;
                 return (
                   <div
-                    className={`${standardBoxShadow} rounded-sm p-1 cursor-pointer hover:bg-gray-100`}
+                    className={`shadow-standard rounded-sm p-1 cursor-pointer hover:bg-gray-100`}
                     onClick={() =>
                       setSelectedCategoryBrand((prev) => ({
                         ...prev,
@@ -176,7 +173,7 @@ export function SelectCategoryAndBrand({
   rootCategory: CategoryWithChildren;
 }) {
   return (
-    <div className={`${aestheticBoxShadow} rounded-md m-2 p-2`}>
+    <div className={`shadow-standard rounded-md m-2 p-2`}>
       <CollapsibleComponent>
         <div className="flex">
           <CategoryComponent className="" category={rootCategory} />

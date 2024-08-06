@@ -2,7 +2,6 @@
 // so use this
 "use client";
 
-import { aestheticBoxShadow, standardBoxShadow } from "@/lib/css";
 import { X } from "lucide-react";
 import React, { useState } from "react";
 
@@ -21,7 +20,7 @@ export function ServerToast({
   }, 10000);
   return (
     <div
-      className={`${aestheticBoxShadow} ${
+      className={`shadow-aesthetic ${
         hide ? "hidden" : null
       } flex justify-between sticky top-2 z-10 border-solid border-[1px]   items-center rounded-sm my-2  mx-auto p-2 max-w-sm   ${
         type === "success"

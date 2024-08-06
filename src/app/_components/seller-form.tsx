@@ -1,4 +1,3 @@
-import { standardBoxShadow } from "@/lib/css";
 import { cn } from "@/lib/utils";
 import {
   InputHTMLAttributes,
@@ -17,7 +16,7 @@ export const ContainerWithHeading = ({
   className?: string;
 }) => {
   return (
-    <div className={cn(className, `rounded-md m-4 p-2 ${standardBoxShadow}`)}>
+    <div className={cn(className, `rounded-md m-4 p-2 shadow-standard`)}>
       <p className="text-xl md:text-2xl pl-2 mt-2 ml-2 mb-4 border-l-4  font-sans font-medium border-teal-400  dark:text-gray-200">
         {heading}
       </p>
